@@ -1,0 +1,383 @@
+Basic format
+
+Creating the table
+CREATE TABLE reaction (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(100),
+    reaction_type VARCHAR(20),
+    post_id INT,
+    created_at DATETIME,
+    location VARCHAR(100),
+    mood_level INT,
+    comment TEXT
+);
+
+Inserting the data
+INSERT INTO reaction (user_name, reaction_type, post_id, created_at, location, mood_level, comment) VALUES
+('Alice', 'like', 101, '2025-08-07 10:15:00', 'New York', 8, 'Nice post!'),
+('Bob', 'love', 102, '2025-08-06 14:20:00', 'Los Angeles', 9, 'Awesome!'),
+('Charlie', 'angry', 101, '2025-08-05 09:10:00', 'Chicago', 3, NULL),
+('Diana', 'wow', 103, '2025-08-07 08:30:00', 'Miami', 7, 'Interesting point.'),
+('Ethan', 'sad', 104, '2025-08-04 16:45:00', 'Dallas', 2, NULL),
+('Fiona', 'love', 102, '2025-08-07 12:00:00', 'Boston', 6, 'Well said.'),
+('George', 'like', 105, '2025-08-03 11:25:00', 'Seattle', 5, NULL),
+('Hannah', 'like', 106, '2025-08-07 15:50:00', 'Denver', 9, 'Completely agree!'),
+('Ian', 'angry', 107, '2025-08-06 13:15:00', 'Phoenix', 4, 'Not okay with this.'),
+('Jane', 'sad', 108, '2025-08-02 18:40:00', 'Atlanta', 1, NULL),
+('Sam', 'like', 101, '2025-08-07 10:50:00', 'New York', 8, NULL),
+('Anita', 'wow', 109, '2025-08-01 20:10:00', 'Houston', 7, NULL),
+('Brian', 'love', 110, '2025-08-07 09:05:00', 'San Francisco', 10, 'Fantastic work!'),
+('Catherine', 'like', 111, '2025-08-07 08:55:00', 'New York', 6, NULL),
+('Daniel', 'angry', 112, '2025-08-05 17:35:00', 'Chicago', 2, NULL);
+ 
+LIKE
+Write a query to find all reactions made by users whose names start with the letter 'A'.
+
+select user_name,reaction_type from reaction where user_name like 'a%';
++-----------+---------------+
+| user_name | reaction_type |
++-----------+---------------+
+| Alice     | like          |
+| Anita     | wow           |
++-----------+---------------+
+
+AS (Alias)
+Write a query to display user_name as Reactor and reaction_type as Type.
+
+ select user_name as reactor,reaction_type as type from reaction;
++-----------+-------+
+| reactor   | type  |
++-----------+-------+
+| Alice     | like  |
+| Bob       | love  |
+| Charlie   | angry |
+| Diana     | wow   |
+| Ethan     | sad   |
+| Fiona     | love  |
+| George    | like  |
+| Hannah    | like  |
+| Ian       | angry |
+| Jane      | sad   |
+| Sam       | like  |
+| Anita     | wow   |
+| Brian     | love  |
+| Catherine | like  |
+| Daniel    | angry |
++-----------+-------+
+
+BETWEEN
+Write a query to find all reactions where the mood level is between 4 and 8.
+
+ select user_name,reaction_type,mood_level from reaction where mood_level between 4 and 8;
++-----------+---------------+------------+
+| user_name | reaction_type | mood_level |
++-----------+---------------+------------+
+| Alice     | like          |          8 |
+| Diana     | wow           |          7 |
+| Fiona     | love          |          6 |
+| George    | like          |          5 |
+| Ian       | angry         |          4 |
+| Sam       | like          |          8 |
+| Anita     | wow           |          7 |
+| Catherine | like          |          6 |
++-----------+---------------+------------+
+
+AND
+Write a query to get all reactions where the type is 'like' and the mood level is above 7.
+
+ select user_name,reaction_type,mood_level from reaction where reaction_type='like' and mood_level>7;
++-----------+---------------+------------+
+| user_name | reaction_type | mood_level |
++-----------+---------------+------------+
+| Alice     | like          |          8 |
+| Hannah    | like          |          9 |
+| Sam       | like          |          8 |
++-----------+---------------+------------+
+
+OR
+Write a query to list all reactions where the type is either 'love' or 'angry'.
+
+ select user_name,reaction_type from reaction where reaction_type='like' or reaction_type='angry';
++-----------+---------------+
+| user_name | reaction_type |
++-----------+---------------+
+| Alice     | like          |
+| Charlie   | angry         |
+| George    | like          |
+| Hannah    | like          |
+| Ian       | angry         |
+| Sam       | like          |
+| Catherine | like          |
+| Daniel    | angry         |
++-----------+---------------+
+
+NOT
+Write a query to show all reactions that are not of type 'sad'.
+
+ select user_name,reaction_type from reaction where reaction_type not in ('sad');
++-----------+---------------+
+| user_name | reaction_type |
++-----------+---------------+
+| Alice     | like          |
+| Bob       | love          |
+| Charlie   | angry         |
+| Diana     | wow           |
+| Fiona     | love          |
+| George    | like          |
+| Hannah    | like          |
+| Ian       | angry         |
+| Sam       | like          |
+| Anita     | wow           |
+| Brian     | love          |
+| Catherine | like          |
+| Daniel    | angry         |
++-----------+---------------+
+
+IN
+Write a query to find all reactions where the reaction type is 'like', 'wow', or 'love'.
+
+select user_name,reaction_type from reaction where reaction_type in ('like','wow','love');
++-----------+---------------+
+| user_name | reaction_type |
++-----------+---------------+
+| Alice     | like          |
+| Bob       | love          |
+| Diana     | wow           |
+| Fiona     | love          |
+| George    | like          |
+| Hannah    | like          |
+| Sam       | like          |
+| Anita     | wow           |
+| Brian     | love          |
+| Catherine | like          |
++-----------+---------------+
+
+IS NULL
+Write a query to display all reactions where the comment is missing (i.e., NULL).
+
+select user_name,reaction_type from reaction where comment is null;;
++-----------+---------------+
+| user_name | reaction_type |
++-----------+---------------+
+| Charlie   | angry         |
+| Ethan     | sad           |
+| George    | like          |
+| Jane      | sad           |
+| Sam       | like          |
+| Anita     | wow           |
+| Catherine | like          |
+| Daniel    | angry         |
++-----------+---------------+
+
+IS NOT NULL
+Write a query to find all reactions that include a comment.
+
+ select user_name,reaction_type from reaction where comment is not null;
++-----------+---------------+
+| user_name | reaction_type |
++-----------+---------------+
+| Alice     | like          |
+| Bob       | love          |
+| Diana     | wow           |
+| Fiona     | love          |
+| Hannah    | like          |
+| Ian       | angry         |
+| Brian     | love          |
++-----------+---------------+
+
+UPPER()
+Write a query to show all usernames in uppercase.
+
+select upper(user_name) from reaction ;
++------------------+
+| upper(user_name) |
++------------------+
+| ALICE            |
+| BOB              |
+| CHARLIE          |
+| DIANA            |
+| ETHAN            |
+| FIONA            |
+| GEORGE           |
+| HANNAH           |
+| IAN              |
+| JANE             |
+| SAM              |
+| ANITA            |
+| BRIAN            |
+| CATHERINE        |
+| DANIEL           |
++------------------+
+
+LOWER()
+Write a query to show all reaction types in lowercase.
+
+select user_name,lower(reaction_type) from reaction ;
++-----------+----------------------+
+| user_name | lower(reaction_type) |
++-----------+----------------------+
+| Alice     | like                 |
+| Bob       | love                 |
+| Charlie   | angry                |
+| Diana     | wow                  |
+| Ethan     | sad                  |
+| Fiona     | love                 |
+| George    | like                 |
+| Hannah    | like                 |
+| Ian       | angry                |
+| Jane      | sad                  |
+| Sam       | like                 |
+| Anita     | wow                  |
+| Brian     | love                 |
+| Catherine | like                 |
+| Daniel    | angry                |
++-----------+----------------------+
+
+LENGTH()
+Write a query to find all users whose usernames are longer than 6 characters.
+
+ select user_name from reaction where length(user_name)>6;
++-----------+
+| user_name |
++-----------+
+| Charlie   |
+| Catherine |
++-----------+
+
+NOW()
+Write a query to find all reactions made today (based on the created_at column).
+
+select user_name,reaction_type,created_at from reaction where date(created_at)=curdate();
++-----------+---------------+---------------------+
+| user_name | reaction_type | created_at          |
++-----------+---------------+---------------------+
+| Alice     | like          | 2025-08-07 10:15:00 |
+| Diana     | wow           | 2025-08-07 08:30:00 |
+| Fiona     | love          | 2025-08-07 12:00:00 |
+| Hannah    | like          | 2025-08-07 15:50:00 |
+| Sam       | like          | 2025-08-07 10:50:00 |
+| Brian     | love          | 2025-08-07 09:05:00 |
+| Catherine | like          | 2025-08-07 08:55:00 |
++-----------+---------------+---------------------+
+
+DATE()
+Write a query to extract and show only the date part from the created_at column.
+
+ select user_name,reaction_type,date(created_at) from reaction;
++-----------+---------------+------------------+
+| user_name | reaction_type | date(created_at) |
++-----------+---------------+------------------+
+| Alice     | like          | 2025-08-07       |
+| Bob       | love          | 2025-08-06       |
+| Charlie   | angry         | 2025-08-05       |
+| Diana     | wow           | 2025-08-07       |
+| Ethan     | sad           | 2025-08-04       |
+| Fiona     | love          | 2025-08-07       |
+| George    | like          | 2025-08-03       |
+| Hannah    | like          | 2025-08-07       |
+| Ian       | angry         | 2025-08-06       |
+| Jane      | sad           | 2025-08-02       |
+| Sam       | like          | 2025-08-07       |
+| Anita     | wow           | 2025-08-01       |
+| Brian     | love          | 2025-08-07       |
+| Catherine | like          | 2025-08-07       |
+| Daniel    | angry         | 2025-08-05       |
++-----------+---------------+------------------+
+
+LIKE with %
+Write a query to find all users whose name contains the substring 'an'.
+
+select user_name from reaction where user_name like '%an%';
++-----------+
+| user_name |
++-----------+
+| Diana     |
+| Ethan     |
+| Hannah    |
+| Ian       |
+| Jane      |
+| Anita     |
+| Brian     |
+| Daniel    |
++-----------+
+
+ROUND()
+Write a query to display each user's mood level rounded to the nearest 5.
+
+ select user_name,round(mood_level/5)*5 from reaction;
++-----------+-----------------------+
+| user_name | round(mood_level/5)*5 |
++-----------+-----------------------+
+| Alice     |                    10 |
+| Bob       |                    10 |
+| Charlie   |                     5 |
+| Diana     |                     5 |
+| Ethan     |                     0 |
+| Fiona     |                     5 |
+| George    |                     5 |
+| Hannah    |                    10 |
+| Ian       |                     5 |
+| Jane      |                     0 |
+| Sam       |                    10 |
+| Anita     |                     5 |
+| Brian     |                    10 |
+| Catherine |                     5 |
+| Daniel    |                     0 |
++-----------+-----------------------+
+
+SUBSTR + UPPER()
+Write a query to show the first 2 letters of each user's name in uppercase.
+
+ select concat(upper(substr(user_name,1,2)),substr(user_name,3)) as user_name from reaction;
++-----------+
+| user_name |
++-----------+
+| ALice     |
+| BOb       |
+| CHarlie   |
+| DIana     |
+| EThan     |
+| FIona     |
+| GEorge    |
+| HAnnah    |
+| IAn       |
+| JAne      |
+| SAm       |
+| ANita     |
+| BRian     |
+| CAtherine |
+| DAniel    |
++-----------+
+NOT IN (with values)
+Write a query to find all reactions not made on posts with IDs 10, 20, or 30.
+
+select user_name,reaction_type,post_id from reaction where post_id not in(10,20,30);
++-----------+---------------+---------+
+| user_name | reaction_type | post_id |
++-----------+---------------+---------+
+| Alice     | like          |     101 |
+| Bob       | love          |     102 |
+| Charlie   | angry         |     101 |
+| Diana     | wow           |     103 |
+| Ethan     | sad           |     104 |
+| Fiona     | love          |     102 |
+| George    | like          |     105 |
+| Hannah    | like          |     106 |
+| Ian       | angry         |     107 |
+| Jane      | sad           |     108 |
+| Sam       | like          |     101 |
+| Anita     | wow           |     109 |
+| Brian     | love          |     110 |
+| Catherine | like          |     111 |
+| Daniel    | angry         |     112 |
++-----------+---------------+---------+
+
+COUNT and IS NULL
+Write a query to count how many reactions have no comment.
+
+ select count(reaction_type) from reaction where comment is not null;
++----------------------+
+| count(reaction_type) |
++----------------------+
+|                    7 |
++----------------------+
